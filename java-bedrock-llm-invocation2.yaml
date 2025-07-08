@@ -1,0 +1,26 @@
+rules:
+  - id: java-llm-bedrock-invocation-generic
+    languages: [java]
+    severity: ERROR
+    message: >
+      Potential LLM/Bedrock/AI model invocation detected: method '$METHOD' on service '$SERVICE' may be calling an LLM or AI model.
+    patterns:
+      - pattern: $RESULT = $SERVICE.$METHOD($REQ, ...);
+      - pattern-inside: |
+          class $CLASS {
+            ...
+          }
+      - metavariable-regex:
+          metavariable: $SERVICE
+          regex: "(awsService|bedrock|llm|llmService|bedrockService|aiService|mlService|.*LLM.*Service|.*Bedrock.*Service|.*AI.*Service|.*ML.*Service)"
+      - metavariable-regex:
+          metavariable: $METHOD
+          regex: "(invokeAgent|bedrock|llm|invoke|fetch|run|call|generate|completion|predict|infer).*"
+    metadata:
+      cwe: "CWE-200: Exposure of Sensitive Information to an Unauthorized Actor"
+      references:
+        - https://aws.amazon.com/bedrock/
+        - https://docs.aws.amazon.com/bedrock/latest/userguide/what-is-bedrock.html
+    paths:
+      include:
+        - "*.java"
