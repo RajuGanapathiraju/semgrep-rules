@@ -17,7 +17,7 @@ rules:
           metavariable: $METHOD
           regex: "(invokeAgent|bedrock|llm|invoke|fetch|run|call|generate|completion|predict|infer).*"
     metadata:
-      cwe: "CWE-200: Exposure of Sensitive Information to an Unauthorized Actor"
+      cwe: "CWE-1427: llm bedrock invocation detected"
       references:
         - https://aws.amazon.com/bedrock/
         - https://docs.aws.amazon.com/bedrock/latest/userguide/what-is-bedrock.html
