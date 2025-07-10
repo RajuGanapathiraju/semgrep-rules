@@ -1,0 +1,29 @@
+rules:
+  - id: java-llm-prompt-injection-specific
+    patterns:
+      - pattern: |
+          $RESP = $SERVICE.$LLM_METHOD($REQ);
+      - pattern-inside: |
+          public $RETURNTYPE $METHOD(..., @RequestBody $REQ_OBJ_TYPE $REQ_OBJ, ...) {
+            ...
+          }
+      - metavariable-regex:
+          metavariable: $SERVICE
+          regex: "(actionAgentService|llmService|bedrockService|.*Agent.*Service|.*LLM.*Service|.*Bedrock.*Service)"
+      - metavariable-regex:
+          metavariable: $LLM_METHOD
+          regex: "(invoke|fetch|run|call|process).*"
+      - metavariable-regex:
+          metavariable: $REQ_OBJ_TYPE
+          regex: "(AgentPromptRequest|ActionAgentRequest|LLMRequest|.*Prompt.*|.*Request.*)"
+    message: |
+      Potential prompt injection: User input from a request body is passed directly to an LLM/AI/ML service method ($LLM_METHOD) without sanitization or validation.
+    languages: [java]
+    severity: ERROR
+    metadata:
+      cwe: "CWE-20: Improper Input Validation"
+      references:
+        - https://owasp.org/www-community/attacks/Prompt_injection
+    paths:
+      include:
+        - "*.java"
