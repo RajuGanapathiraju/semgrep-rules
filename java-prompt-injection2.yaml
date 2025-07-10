@@ -21,7 +21,7 @@ rules:
     languages: [java]
     severity: ERROR
     metadata:
-      cwe: "CWE-20: Improper Input Validation"
+      cwe: "CWE-1427: Improper Input Validation"
       references:
         - https://owasp.org/www-community/attacks/Prompt_injection
     paths:
