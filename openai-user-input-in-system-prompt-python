@@ -9,7 +9,7 @@ rules:
       and sanitize user input, or move user input to the 'user' role message
       instead.
     metadata:
-      cwe: "CWE-77: Command Injection"
+      cwe: "CWE-1427: Command Injection"
       category: security
       confidence: MEDIUM
       subcategory: [vuln]
